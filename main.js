@@ -64,14 +64,14 @@ function processFile(fileName, bytes, bufferSize) {
 			dynaHash.processData(buffer, bytesRead);
 	
 			if(eof) {
-				fs.close(fd, () => { showHash(dynaHash); });
+				fs.close(fd, () => { showHash(fileName, dynaHash); });
 			}
 		});
 	});
 }
 
 
-function showHash(dynaHash) {
-	console.log(dynaHash.toString());
+function showHash(fileName, dynaHash) {
+	console.log(fileName+": "+dynaHash.toString());
 }
 
