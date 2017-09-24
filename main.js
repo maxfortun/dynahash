@@ -9,7 +9,6 @@ var fs = require("fs");
 
 const args = processArgv(process.argv);
 
-
 for(var i = 0; i < args.args.length; i++) {
 	var file = args.args[i];
 	processFile(file, args.options.bytes, args.options.bufferSize);
@@ -43,7 +42,7 @@ function processFile(fileName, bytes, bufferSize) {
 		return;
 	}
 
-	console.log("Compressing "+fileName+" into "+args.bytes+" bytes with "+args.bufferSize+" byte buffer");
+	console.log("Compressing "+fileName+" into "+bytes+" bytes with "+bufferSize+" byte buffer");
 
 	var DynaHash = require("./DynaHash");
 	dynaHash = new DynaHash(bytes);
@@ -65,14 +64,14 @@ function processFile(fileName, bytes, bufferSize) {
 			dynaHash.processData(buffer, bytesRead);
 	
 			if(eof) {
-				fs.close(fd, showHash);
+				fs.close(fd, () => { showHash(dynaHash); });
 			}
 		});
 	});
 }
 
 
-function showHash() {
+function showHash(dynaHash) {
 	console.log(dynaHash.toString());
 }
 
