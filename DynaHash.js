@@ -25,7 +25,7 @@ DynaHash.prototype.getHashPosition = function(position) {
 DynaHash.prototype.processByte = function(position, byte) {
 	var hashPosition = this.getHashPosition(position);
 	this.hash[hashPosition] = this.hash[hashPosition] ^ byte;
-	console.log(position+"->"+hashPosition+": "+byte);
+	//console.log(position+"->"+hashPosition+": "+byte);
 }
 
 DynaHash.prototype.toString = function() {

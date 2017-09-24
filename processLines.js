@@ -6,6 +6,7 @@ if(process.argv.length < 4) {
 }
 
 var fs = require("fs");
+var readline = require('readline');
 var DynaHash = require("./DynaHash");
 var Args = require('./Args');
 
@@ -27,33 +28,15 @@ function processFile(fileName, bytes, bufferSize) {
 
 	console.log("Compressing "+fileName+" into "+bytes+" bytes with "+bufferSize+" byte buffer");
 
-	var dynaHash = new DynaHash(bytes);
 
-	fs.open(fileName, 'r', (err, fd) => {
-		if (err) {
-			console.log("open: "+JSON.stringify(err));
-			return;
-		}
-
-		var buffer = new Buffer(bufferSize);
-		fs.read(fd, buffer, 0, buffer.length, 0, (err, bytesRead, buffer) => {
-			if (err) {
-				console.log("read: "+JSON.stringify(err));
-				return;
-			}
-			const eof = (bytesRead != buffer.length);
-	
-			dynaHash.processBuffer(buffer, bytesRead);
-	
-			if(eof) {
-				fs.close(fd, () => { showHash(fileName, dynaHash); });
-			}
-		});
+	var lineReader = readline.createInterface({
+		input: fs.createReadStream(fileName)
 	});
-}
 
-
-function showHash(fileName, dynaHash) {
-	console.log(fileName+": "+dynaHash.toString());
+	lineReader.on('line', function (line) {
+		var dynaHash = new DynaHash(bytes);
+		dynaHash.processBuffer(new Buffer(line), line.length);
+		console.log(dynaHash.toString()+" "+fileName+": "+line);
+	});
 }
 
