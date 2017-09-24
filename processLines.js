@@ -1,6 +1,6 @@
 #!/usr/bin/env node 
 
-if(process.argv.length < 4) {
+if(process.argv.length < 3) {
 	console.log("Usage: "+process.argv[0]+" bytes=64 bufferSize=1024 file1 .. fileN");
 	process.exit();
 }
