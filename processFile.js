@@ -7,33 +7,15 @@ if(process.argv.length < 4) {
 
 var fs = require("fs");
 
-const args = processArgv(process.argv);
+var Args = require('./Args');
+var args = new Args(process.argv, 2, {
+										bytes: 64,
+										bufferSize: 1024
+									});
 
 for(var i = 0; i < args.args.length; i++) {
 	var file = args.args[i];
 	processFile(file, args.options.bytes, args.options.bufferSize);
-}
-
-function processArgv(argv) {
-	var args =	{
-					options: {
-						bytes: 64,
-						bufferSize: 1024
-					},
-					args: []
-				};
-
-	for(var i = 2; i < argv.length; i++) {
-		var arg = argv[i].split('=');
-		if(arg.length > 1) {
-			args.options[arg[0]]=arg[1];
-		} else {
-			args.args.push(arg[0]);
-		}
-	}
-
-	console.log(args);
-	return args;
 }
 
 function processFile(fileName, bytes, bufferSize) {
