@@ -9,9 +9,16 @@ function DynaHash(bytes) {
 	}
 }
 
-DynaHash.prototype.processBuffer = function(buffer, bytesRead) {
-	for(var i = 0; i < bytesRead; i++) {
+DynaHash.prototype.processBuffer = function(buffer, bytesRead, final) {
+	var i = 0;
+	for(i = 0; i < bytesRead; i++) {
 		this.processByte(i, buffer[i]);
+	}
+	if(!final) {
+		return;
+	}
+	for(i = 0; i < this.hash.length; i++) {
+		this.processByte(i, this.hash[this.getHashPosition(i-1)]);
 	}
 }
 

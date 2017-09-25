@@ -35,7 +35,7 @@ function processFile(fileName, bytes, bufferSize) {
 
 	lineReader.on('line', function (line) {
 		var dynaHash = new DynaHash(bytes);
-		dynaHash.processBuffer(new Buffer(line), line.length);
+		dynaHash.processBuffer(new Buffer(line), line.length, true);
 		console.log(dynaHash.toString()+" "+fileName+": "+line);
 	});
 }

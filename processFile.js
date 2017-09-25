@@ -43,7 +43,7 @@ function processFile(fileName, bytes, bufferSize) {
 			}
 			const eof = (bytesRead != buffer.length);
 	
-			dynaHash.processBuffer(buffer, bytesRead);
+			dynaHash.processBuffer(buffer, bytesRead, eof);
 	
 			if(eof) {
 				fs.close(fd, () => { showHash(fileName, dynaHash); });
